@@ -42,6 +42,30 @@ npm run smoke
 npm audit
 ```
 
+## Docker 部署
+
+仓库根目录包含 `Dockerfile`，平台选择 Dockerfile 构建时使用：
+
+```text
+Dockerfile
+```
+
+容器默认监听：
+
+```text
+PORT=3001
+```
+
+部署平台需要配置环境变量：
+
+```dotenv
+MOYU_ACCOUNT=your-account
+MOYU_PASSWORD=your-password
+MOYU_SECRET=your-long-random-secret
+```
+
+如果线上也要播放视频和头像，需要把素材放进可访问的位置，或改为外部 URL / 对象存储。
+
 ## 数据存储
 
 - 聊天记录与棋局：`data/app.sqlite`
