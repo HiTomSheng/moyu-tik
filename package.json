@@ -1,0 +1,37 @@
+{
+  "name": "moyu-chat",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "node scripts/dev.mjs",
+    "dev:server": "tsx watch server/index.mjs",
+    "dev:client": "vite",
+    "build": "vite build",
+    "smoke": "node scripts/smoke.mjs",
+    "start": "NODE_ENV=production node server/index.mjs"
+  },
+  "dependencies": {
+    "better-sqlite3": "^11.9.1",
+    "cookie-parser": "^1.4.7",
+    "dotenv": "^17.4.2",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^2.1.1",
+    "nanoid": "^5.1.5",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "socket.io": "^4.8.1",
+    "socket.io-client": "^4.8.3"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.1",
+    "@types/node": "^24.0.10",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^4.7.0",
+    "tsx": "^4.20.3",
+    "typescript": "^5.8.3",
+    "vite": "^7.0.2"
+  }
+}

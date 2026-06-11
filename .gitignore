@@ -1,0 +1,10 @@
+node_modules/
+dist/
+data/*.sqlite*
+uploads/*
+!uploads/.gitkeep
+.DS_Store
+.env
+.env.*
+!.env.example
+vendor/tiktok-emojis/.git/
