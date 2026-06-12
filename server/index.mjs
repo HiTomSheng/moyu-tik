@@ -20,13 +20,22 @@ const distDir = path.join(rootDir, 'dist');
 const emojiDir = path.join(rootDir, 'vendor', 'tiktok-emojis', 'materials');
 
 const assetRoot = process.env.MOYU_ASSET_ROOT || path.join(rootDir, 'assets');
-const videoPath = process.env.MOYU_VIDEO_PATH || path.join(assetRoot, 'video.mp4');
+const videoPath =
+  process.env.MOYU_VIDEO_PATH ||
+  'https://nos.netease.com/youdata-netease/public-utilUpload-kzPXzn37ti6KLAMfGZ1DWR.mp4';
 const avatarDir = process.env.MOYU_AVATAR_DIR || path.join(assetRoot, 'avatars');
 const logoPath = process.env.MOYU_LOGO_PATH || path.join(assetRoot, 'logo.svg');
 const avatarPaths = {
-  kuromi: process.env.MOYU_KUROMI_AVATAR_PATH || path.join(avatarDir, 'kuromi.jpeg'),
-  baku: process.env.MOYU_BAKU_AVATAR_PATH || path.join(avatarDir, 'baku.jpeg')
+  kuromi:
+    process.env.MOYU_KUROMI_AVATAR_PATH ||
+    'https://img.cdn1.vip/i/6a2ba3c9da723_1781244873.jpg',
+  baku:
+    process.env.MOYU_BAKU_AVATAR_PATH ||
+    'https://img.cdn1.vip/i/6a2ba3c9c5352_1781244873.jpg'
 };
+
+// 判断配置值是远程 URL 还是本地路径
+const isHttpUrl = (value) => typeof value === 'string' && /^https?:\/\//i.test(value);
 
 for (const dir of [dataDir, uploadsDir]) {
   fs.mkdirSync(dir, { recursive: true });
@@ -59,8 +68,18 @@ db.exec(`
   );
 `);
 
-const AUTH_ACCOUNT = process.env.MOYU_ACCOUNT;
-const AUTH_PASSWORD = process.env.MOYU_PASSWORD;
+function envFirst(...names) {
+  for (const name of names) {
+    const value = process.env[name];
+    if (typeof value === 'string' && value.trim()) {
+      return value.trim();
+    }
+  }
+  return '';
+}
+
+const AUTH_ACCOUNT = envFirst('MOYU_ACCOUNT', 'MOYU_USERNAME', 'ACCOUNT', 'APP_ACCOUNT');
+const AUTH_PASSWORD = envFirst('MOYU_PASSWORD', 'PASSWORD', 'APP_PASSWORD');
 const AUTH_COOKIE = 'moyu_auth';
 const JWT_SECRET = process.env.MOYU_SECRET || 'moyu-local-secret';
 const PORT = Number(process.env.APPLICATION_PORT || process.env.PORT || 8080);
@@ -331,7 +350,9 @@ app.get('/api/session', (req, res) => {
 
 app.post('/api/login', (req, res) => {
   if (!AUTH_ACCOUNT || !AUTH_PASSWORD) {
-    res.status(500).json({ error: '本地登录配置缺失' });
+    res.status(500).json({
+      error: '登录配置缺失：请设置 MOYU_ACCOUNT 和 MOYU_PASSWORD'
+    });
     return;
   }
   const { account, password } = req.body || {};
@@ -396,6 +417,7 @@ app.post('/api/upload', requireAuth, upload.single('file'), (req, res) => {
 });
 
 app.get('/media/logo', (_req, res) => {
+  if (isHttpUrl(logoPath)) return res.redirect(302, logoPath);
   res.sendFile(logoPath);
 });
 
@@ -405,10 +427,12 @@ app.get('/media/avatar/:profileId', (req, res) => {
     res.status(404).end();
     return;
   }
+  if (isHttpUrl(target)) return res.redirect(302, target);
   res.sendFile(target);
 });
 
 app.get('/media/video/main', (_req, res) => {
+  if (isHttpUrl(videoPath)) return res.redirect(302, videoPath);
   res.sendFile(videoPath);
 });
 
