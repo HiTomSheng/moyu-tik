@@ -294,6 +294,10 @@ app.use(express.json({ limit: '12mb' }));
 app.use('/uploads', express.static(uploadsDir));
 app.use('/emoji-assets', express.static(emojiDir));
 
+app.get('/healthz', (_req, res) => {
+  res.status(200).json({ ok: true });
+});
+
 const upload = multer({
   storage: multer.diskStorage({
     destination: (_req, _file, cb) => cb(null, uploadsDir),

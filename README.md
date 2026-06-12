@@ -53,7 +53,7 @@ Dockerfile
 容器默认监听：
 
 ```text
-PORT=3001
+PORT=8080
 ```
 
 部署平台需要配置环境变量：
@@ -62,6 +62,8 @@ PORT=3001
 MOYU_ACCOUNT=your-account
 MOYU_PASSWORD=your-password
 MOYU_SECRET=your-long-random-secret
+PORT=8080
+NODE_ENV=production
 ```
 
 如果线上也要播放视频和头像，需要把素材放进可访问的位置，或改为外部 URL / 对象存储。

@@ -16,7 +16,7 @@ FROM node:22-alpine AS runner
 
 WORKDIR /app
 ENV NODE_ENV=production
-ENV PORT=3001
+ENV PORT=8080
 
 COPY --from=build /app/package*.json ./
 COPY --from=build /app/node_modules ./node_modules
@@ -27,5 +27,5 @@ COPY --from=build /app/uploads/.gitkeep ./uploads/.gitkeep
 
 RUN mkdir -p data uploads
 
-EXPOSE 3001
+EXPOSE 8080
 CMD ["node", "server/index.mjs"]
