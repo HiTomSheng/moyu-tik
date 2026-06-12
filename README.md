@@ -62,6 +62,7 @@ PORT=8080
 MOYU_ACCOUNT=your-account
 MOYU_PASSWORD=your-password
 MOYU_SECRET=your-long-random-secret
+APPLICATION_PORT=8080
 PORT=8080
 NODE_ENV=production
 ```

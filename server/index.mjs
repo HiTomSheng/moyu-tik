@@ -63,7 +63,7 @@ const AUTH_ACCOUNT = process.env.MOYU_ACCOUNT;
 const AUTH_PASSWORD = process.env.MOYU_PASSWORD;
 const AUTH_COOKIE = 'moyu_auth';
 const JWT_SECRET = process.env.MOYU_SECRET || 'moyu-local-secret';
-const PORT = Number(process.env.PORT || 3001);
+const PORT = Number(process.env.APPLICATION_PORT || process.env.PORT || 8080);
 
 const allowedProfiles = [
   { id: 'kuromi', label: '库洛米', avatar: '/media/avatar/kuromi' },
@@ -635,7 +635,7 @@ io.on('connection', (socket) => {
 
 if (process.env.NODE_ENV === 'production' && fs.existsSync(path.join(distDir, 'index.html'))) {
   app.use(express.static(distDir));
-  app.get('*', (_req, res) => {
+  app.use((_req, res) => {
     res.sendFile(path.join(distDir, 'index.html'));
   });
 } else {

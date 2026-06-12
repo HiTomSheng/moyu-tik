@@ -16,6 +16,7 @@ FROM node:22-alpine AS runner
 
 WORKDIR /app
 ENV NODE_ENV=production
+ENV APPLICATION_PORT=8080
 ENV PORT=8080
 
 COPY --from=build /app/package*.json ./
